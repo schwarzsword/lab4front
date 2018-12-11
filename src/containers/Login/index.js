@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import "./Login.css";
 import $ from 'jquery';
 import axios from "axios";
@@ -25,38 +25,36 @@ export default class Login extends Component {
         document.getElementById("message").innerText = "Неверное имя пользователя или пароль";
     }
 
-    // settings = {
-    //     "async": true,
-    //     "crossDomain": true,
-    //     "url": "http://localhost:8080/login",
-    //     "method": "POST",
-    //     "headers": {
-    //         "Content-Type": "application/x-www-form-urlencoded",
-    //         "Authorization": "Basic Og==",
-    //         "cache-control": "no-cache",
-    //     },
-    //     "data": {
-    //         "login": this.state.login,
-    //         "password": this.state.password
-    //     }
-    // };
-
 
     handleSubmit = event => {
+        let settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://localhost:8080/login",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": "Basic Og==",
+                "cache-control": "no-cache",
+                "Postman-Token": "b70d960f-4f61-486c-9310-7c5ced49cd0d"
+            },
+            "data": {
+                "login": this.state.login,
+                "password": this.state.password
+            }
+        };
+
         event.preventDefault();
         // this.props.userHasAuthenticated("true");
-        // $.ajax(this.settings).done(function (response) {
-        //     console.log(response);
-        // });
-        // axios.post("localhost:8080/login", {"login": this.state.login, "password": this.state.password}, {
-        //     withCredentials:true,
-        //     headers: {
-        //         "Content-Type": "application/x-www-form-urlencoded",
-        //         "Authorization": "Basic Og==",
-        //         "cache-control": "no-cache",
-        //     }
-        // }).then(resp => console.log(resp));
-        this.props.history.push("/main");
+        $.ajax(settings).done(resp => {
+            this.props.userHasAuthenticated(resp.toString());
+            console.log(resp.toString());
+            // this.props.parent.render();
+            if(this.props.isAuthenticated){
+                this.props.history.push("/main");
+            }
+            else this.rendMessage()
+        });
 
     };
 

@@ -17,6 +17,7 @@ export default class App extends Component {
 
     handleLogout = event => {
         this.userHasAuthenticated("false");
+        this.render();
     };
 
     // shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -30,7 +31,8 @@ export default class App extends Component {
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
-            userHasAuthenticated: this.userHasAuthenticated
+            userHasAuthenticated: this.userHasAuthenticated,
+            parent:this
         };
         return (
             <div className="App container">
